@@ -12,21 +12,50 @@ class App extends Component {
     };
 
     componentDidMount() {
-        console.log(this.state.memes);
+        this.setState({"memes" : this.aryShuffle(this.state.memes)});
+    }
+
+    getRandomInt = function(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+    }
+
+    aryShuffle = function(a)
+    {
+        for(let i = 0; i < a.length; i++)
+        {
+            let new_spot = this.getRandomInt(0, a.length);
+            let swap = a[new_spot];
+            a[new_spot] = a[i];
+            a[i] = swap;
+        }
+        return a;
     }
 
     tileClick = (id) => {
-        for(let i = 0; i < this.state.memes.lenght; i++)
+        console.log("id: " + id);
+        let memes_local = this.state.memes;
+        for(let i = 0; i < memes_local.length; i++)
         {
-            if(this.state.memes[i].id === id)
+            if(memes_local[i].id === id)
             {
-                if(this.state.memes[i].clicked === false)
+                console.log("found " + id);
+                if(memes_local[i].clicked === false)
                 {
-                    this.state.memes[i].clicked = true;
-                    //shuffle
+                    memes_local[i].clicked = true;
+                    //this.setState({score : this.state.score + 1});
+                    if(this.state.score + 1 > this.state.topscore)
+                    {
+                        this.setState({topscore : this.state.score});
+                    }
+                    this.setState({score : this.state.score + 1});
                 }
             }
         }
+
+        this.setState({memes : memes_local});
+        console.log(this.state.memes);
     };
 
     render() {
