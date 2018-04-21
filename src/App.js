@@ -35,31 +35,38 @@ class App extends Component {
 
     tileClick = (id) => {
         let memes_local = this.state.memes;
+        let score_local = this.state.score;
+        let topscore_local = this.state.topscore;
+        let message_local;
         for(let i = 0; i < memes_local.length; i++)
         {
             if(memes_local[i].id === id)
             {
                 if(memes_local[i].clicked === false)
                 {
-                    this.setState({message : "Correct!"});
+                    message_local = "Correct!";
                     memes_local[i].clicked = true;
-                    this.setState({score : this.state.score + 1});
-                    if(this.state.score > this.state.topscore)
+                    score_local++;
+                    if(score_local > topscore_local)
                     {
-                        this.setState({topscore : this.state.score});
+                        topscore_local = score_local;
                     }
                 }
                 else
                 {
-                    this.setState({score : 0});
-                    this.setState({message : "Incorrect!"});
+                    score_local = 0;
+                    message_local = "Incorrect!";
+                    for(let i = 0; i < memes_local.length; i++)
+                    {
+                        memes_local[i].clicked = false;
+                    }
                 }
                 memes_local = this.aryShuffle(memes_local);
                 break;
             }
         }
 
-        this.setState({memes : memes_local});
+        this.setState({memes: memes_local, score: score_local, topscore: topscore_local, message: message_local});
     };
 
     render() {
