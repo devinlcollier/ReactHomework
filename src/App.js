@@ -1,21 +1,42 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import Navbar from "./components/Navbar.js";
+import TileContainer from "./components/TileContainer.js";
+import memes from "./memes.json";
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+    state = {
+        "memes": memes,
+        "score": 0,
+        "topscore": 0,
+        "message": "Click All The Memes!"
+    };
+
+    componentDidMount() {
+        console.log(this.state.memes);
+    }
+
+    tileClick = (id) => {
+        for(let i = 0; i < this.state.memes.lenght; i++)
+        {
+            if(this.state.memes[i].id === id)
+            {
+                if(this.state.memes[i].clicked === false)
+                {
+                    this.state.memes[i].clicked = true;
+                    //shuffle
+                }
+            }
+        }
+    };
+
+    render() {
+        return (
+            <div>
+                <Navbar message = {this.state.message} score = {this.state.score} topscore = {this.state.topscore}/>
+                <TileContainer memes={this.state.memes} tileClick={this.tileClick}/>
+            </div>
+        );
+    }
 }
 
 export default App;
